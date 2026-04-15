@@ -5,7 +5,7 @@ from typing import Any
 
 
 class DataProcessor(ABC):
-    queue: list
+    queue: list[tuple[int, str]]
     counter: int
 
     def __init__(self) -> None:
@@ -21,13 +21,9 @@ class DataProcessor(ABC):
         pass
 
     def output(self) -> tuple[int, str]:
-        try:
-            if self.queue:
-                return self.queue.pop(0)
-            else:
-                raise IndexError("Data stream is empty.")
-        except IndexError as e:
-            print(f"Got exception: {e}")
+        if self.queue:
+            return self.queue.pop(0)
+        print("Data stream is empty.")
 
         return -1, ""
 
@@ -37,10 +33,9 @@ class NumericProcessor(DataProcessor):
         if isinstance(data, (int, float)):
             return True
 
-        true: bool = (
-            True if all(isinstance(i, (int, float)) for i in data) else False
-        )
-        if isinstance(data, list) and true:
+        if isinstance(data, list) and all(
+            isinstance(i, (int, float)) for i in data
+        ):
             return True
         return False
 
@@ -50,7 +45,7 @@ class NumericProcessor(DataProcessor):
                 if isinstance(data, (int, float)):
                     self.queue.append((self.counter, str(data)))
                     self.counter += 1
-                if isinstance(data, list):
+                elif isinstance(data, list):
                     for item in data:
                         self.queue.append((self.counter, str(item)))
                         self.counter += 1
@@ -74,12 +69,12 @@ class TextProcessor(DataProcessor):
                 if isinstance(data, str):
                     self.queue.append((self.counter, str(data)))
                     self.counter += 1
-                if isinstance(data, list):
+                elif isinstance(data, list):
                     for item in data:
                         self.queue.append((self.counter, str(item)))
                         self.counter += 1
             else:
-                raise ValueError("Improper numeric data")
+                raise ValueError("Improper text data")
         except ValueError as e:
             print(f"Got exception: {e}")
 
@@ -92,14 +87,15 @@ class LogProcessor(DataProcessor):
                 for key, value in data.items()
             ):
                 return True
-        if isinstance(data, list):
-            for item in data:
-                if isinstance(item, dict):
-                    if all(
-                        isinstance(key, str) and isinstance(value, str)
-                        for key, value in item.items()
-                    ):
-                        return True
+        elif isinstance(data, list):
+            return all(
+                isinstance(i, dict)
+                and all(
+                    isinstance(key, str) and isinstance(value, str)
+                    for key, value in i.items()
+                )
+                for i in data
+            )
 
         return False
 
@@ -116,7 +112,7 @@ class LogProcessor(DataProcessor):
                             )
                         )
                         self.counter += 1
-                if isinstance(data, list):
+                elif isinstance(data, list):
                     for i in data:
                         log_level = i.get("log_level")
                         log_message = i.get("log_message")
