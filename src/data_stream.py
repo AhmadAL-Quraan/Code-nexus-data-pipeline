@@ -1,4 +1,3 @@
-
 from abc import ABC, abstractmethod
 from typing import Any
 
@@ -6,12 +5,10 @@ from typing import Any
 
 
 class DataProcessor(ABC):
-    queue: list[tuple[int, str]]
-    counter: int
 
     def __init__(self) -> None:
-        self.queue = list()
-        self.counter = 0
+        self.queue: list = list()
+        self.counter: int = 0
 
     @abstractmethod
     def validate(self, data: Any) -> bool:
@@ -135,29 +132,87 @@ The key, value in dict must be string.")
             print(f"Got exception: {e}")
 
 
-
 class DataStream:
     def __init__(self) -> None:
         self.processors: list[DataProcessor] = []
-    def register_processor(self, proc:DataProcessor):
+
+    def register_processor(self, proc: DataProcessor) -> None:
         self.processors.append(proc)
-    
-    def process_stream(self, stream: list[Any]):
+
+    def process_stream(self, stream: list[Any]) -> None:
         for data in stream:
-           handle = False 
-           try: 
-            for proc in self.processors:
-                if proc.validate(data):
-                    proc.ingest(data)
-                    handle = True 
-            if not handle:
-                    raise ValueError(f"Can't process element in stream: {data}")
-           except Exception as e:
-                 print(f"DataStream error - {e}")
+            handle = False
+            try:
+                for proc in self.processors:
+                    if proc.validate(data):
+                        proc.ingest(data)
+                        handle = True
 
-        
-            
+                if not handle:
+                    raise ValueError(
+                        f"Can't process element in stream: {data}"
+                    )
 
-if __name__== "__main__":
+            except ValueError as e:
+                print(f"DataStream error - {e}")
+
+    def print_statistics(self, name: str, obj: DataProcessor) -> None:
+        print(f"{name} total {obj.counter} items \
+processed, remaining {len(obj.queue)}\
+on processor")
 
 
+# def print_processors_stats(self) -> None:
+
+
+if __name__ == "__main__":
+    dataStream = DataStream()
+    print("=== Code Nexus - Data Stream ===\n")
+    print("Initialize Data Stream...")
+    print("== DataStream statistics ==")
+    print("No processor found, no data\n")
+    print("Registering Numeric Processor\n")
+    numericProcessor = NumericProcessor()
+    data = [
+        "Hello world",
+        [3.14, -1, 2.71],
+        [
+            {
+                "log_level": "WARNING",
+                "log_message": "Telnet access!Use ssh instead",
+            },
+            {"log_level": "INFO", "log_message": "User wil is connected"},
+        ],
+        42,
+        ["Hi", "five"],
+    ]
+    print(f"Send first batch of data on stream: {data}")
+    dataStream.register_processor(numericProcessor)
+    dataStream.process_stream(data)
+    print("== DataStream statistics ==")
+    dataStream.print_statistics("Numeric Processor: ", numericProcessor)
+    print()
+    print("Registering other data processors\n")
+    textProcessor = TextProcessor()
+    logProcessor = LogProcessor()
+    print("Send the same batch again")
+    print("== DataStream statistics ==")
+    dataStream.register_processor(textProcessor)
+    dataStream.register_processor(logProcessor)
+    dataStream.process_stream(data)
+
+    dataStream.print_statistics("Numeric Processor: ", numericProcessor)
+    dataStream.print_statistics("Text Processor ", textProcessor)
+    dataStream.print_statistics("Log Processor: ", logProcessor)
+    print("\nConsume some elements from the data \
+processors: Numeric 3, Text 2, Log 1")
+    numericProcessor.output()
+    numericProcessor.output()
+    numericProcessor.output()
+    textProcessor.output()
+    textProcessor.output()
+    logProcessor.output()
+    print("== DataStream statistics ==")
+    dataStream.print_statistics("Numeric Processor: ", numericProcessor)
+    dataStream.print_statistics("Text Processor ", textProcessor)
+    dataStream.print_statistics("Log Processor: ", logProcessor)
