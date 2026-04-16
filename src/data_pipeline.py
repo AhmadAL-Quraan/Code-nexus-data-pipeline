@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Protocol
 
 # Allowed standard library imports: abc, collections, typing
 
@@ -160,59 +160,11 @@ class DataStream:
         print(f"{name} total {obj.counter} items \
 processed, remaining {len(obj.queue)}\
  on processor")
+    def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
 
 
-# def print_processors_stats(self) -> None:
+class ExportPlugin(Protocol):
+    def process_output(self, data: list[tuple[int, str]]) -> None:
 
 
-if __name__ == "__main__":
-    dataStream = DataStream()
-    print("=== Code Nexus - Data Stream ===\n")
-    print("Initialize Data Stream...")
-    print("== DataStream statistics ==")
-    print("No processor found, no data\n")
-    print("Registering Numeric Processor\n")
-    numericProcessor = NumericProcessor()
-    data = [
-        "Hello world",
-        [3.14, -1, 2.71],
-        [
-            {
-                "log_level": "WARNING",
-                "log_message": "Telnet access!Use ssh instead",
-            },
-            {"log_level": "INFO", "log_message": "User wil is connected"},
-        ],
-        42,
-        ["Hi", "five"],
-    ]
-    print(f"Send first batch of data on stream: {data}")
-    dataStream.register_processor(numericProcessor)
-    dataStream.process_stream(data)
-    print("== DataStream statistics ==")
-    dataStream.print_statistics("Numeric Processor: ", numericProcessor)
-    print()
-    print("Registering other data processors\n")
-    textProcessor = TextProcessor()
-    logProcessor = LogProcessor()
-    print("Send the same batch again")
-    print("== DataStream statistics ==")
-    dataStream.register_processor(textProcessor)
-    dataStream.register_processor(logProcessor)
-    dataStream.process_stream(data)
 
-    dataStream.print_statistics("Numeric Processor: ", numericProcessor)
-    dataStream.print_statistics("Text Processor ", textProcessor)
-    dataStream.print_statistics("Log Processor: ", logProcessor)
-    print("\nConsume some elements from the data \
-processors: Numeric 3, Text 2, Log 1")
-    numericProcessor.output()
-    numericProcessor.output()
-    numericProcessor.output()
-    textProcessor.output()
-    textProcessor.output()
-    logProcessor.output()
-    print("== DataStream statistics ==")
-    dataStream.print_statistics("Numeric Processor: ", numericProcessor)
-    dataStream.print_statistics("Text Processor ", textProcessor)
-    dataStream.print_statistics("Log Processor: ", logProcessor)

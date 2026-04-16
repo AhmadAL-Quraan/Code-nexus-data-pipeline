@@ -32,9 +32,10 @@ This file implements a modular data processing system using object-oriented desi
 All processors follow a unified workflow:
 validate → ingest → store → output (FIFO)
 
-![Data Processor class diagram](pic/DataProcessor_class_diagram.jpeg)
 
 
 ## data_stream.py 
 
-![Data stream aggregation realationShip](pic/data_stream_class_diagram.jpeg)
+## Class Diagram 
+
+![Class diagram](pic/class_diagram.png)
