@@ -3,11 +3,7 @@ Polymorphic data processing pipeline in Python using abstract classes and dynami
 
 ## Brief 
 
-A scalable and extensible data processing pipeline implemented in Python, designed to demonstrate advanced object-oriented programming concepts.
-
-The system leverages abstract base classes and polymorphism to process heterogeneous data streams through a unified interface. It dynamically routes data to appropriate processors (numeric, text, and log-based), ensuring type-safe validation and flexible ingestion.
-
-The architecture is extended with a plugin-based output pipeline using protocol-driven design, enabling easy integration of export formats such as CSV and JSON.
+A modular data stream processing pipeline in Python that demonstrates polymorphism and abstraction using abstract base classes. It routes heterogeneous data to appropriate processors and uses a plugin-based architecture to support flexible output formats like CSV and JSON.
 
 Key concepts demonstrated:
 
