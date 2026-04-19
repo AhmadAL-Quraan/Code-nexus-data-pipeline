@@ -15,7 +15,7 @@ Key concepts demonstrated:
 
 ## Class Diagram 
 
-![Class diagram](pic/class_diagram.png)
+![Class diagram](pic/codex_diagram.jpeg)
 
 
 “output_pipeline → calls output → collects values → sends to process_output → plugin formats (CSV/JSON)”
