@@ -29,6 +29,9 @@ Key concepts demonstrated:
   * Enforces a Contract: It ensures consistency across different subclasses, making it easier to maintain large codebases. 
 
 
+## How polymorphism helps in design ?
+
+Allowing different object types to be treated through a common interface, which enables flexibility, high re-usability, and reduced coupling.
 
 ## Class Diagram 
 
@@ -58,8 +61,7 @@ validate → ingest → store → output (FIFO)
 
 ## data_stream.py 
 
-* Build an adaptive stream processing workflow that can han-
-dle multiple data types simultaneously.
+* Build an adaptive stream processing workflow that can handle multiple data types simultaneously.
 
 * Print the static of each processor handler.
 
