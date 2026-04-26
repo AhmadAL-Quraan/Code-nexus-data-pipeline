@@ -3,6 +3,7 @@ Polymorphic data processing pipeline in Python using abstract classes and dynami
 
 ## Brief 
 
+
 A modular data stream processing pipeline in Python that demonstrates polymorphism and abstraction using abstract base classes. It routes heterogeneous data to appropriate processors and uses a plugin-based architecture to support flexible output formats like CSV and JSON.
 
 Key concepts demonstrated:
@@ -12,6 +13,22 @@ Key concepts demonstrated:
 * Method overriding and type specialization
 * Plugin architecture with duck typing
 * Clean and modular system design
+
+
+## What is abstract class ? 
+
+
+-> It's a blueprint for any class that inherits from it to behave in a specific way, it could have concrete methods and abstract methods(the children must inherit it).
+
+  *  Cannot be Instantiated: You cannot create an object directly from an abstract class.
+
+  * Blueprint for Subclasses: It defines methods that subclasses must implement to become concrete (instantiable).
+
+  * Mixed Methods: It can contain both abstract methods (which have no implementation) and concrete methods (which have a full implementation and can be inherited as-is).
+
+  * Enforces a Contract: It ensures consistency across different subclasses, making it easier to maintain large codebases. 
+
+
 
 ## Class Diagram 
 
